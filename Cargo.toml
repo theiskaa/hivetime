@@ -2,10 +2,6 @@
 name = "hivetime"
 version = "0.1.0"
 edition = "2021"
-
-[dependencies]
-version = "0.1.0"
-edition = "2021"
 authors = ["me@theiskaa.com"]
 description = "A simple and lightweight time interpreter and calculator"
 readme = "README.md"
@@ -13,3 +9,5 @@ homepage = "https://github.com/theiskaa/hivetime"
 repository = "https://github.com/theiskaa/hivetime"
 license-file = "LICENSE"
 keywords = ["interpreter", "parser", "calculator"]
+
+[dependencies]
