@@ -2,7 +2,7 @@
  * TODO: add documentation about file.
  */
 
-use crate::interpreter::position::BytePos;
+use super::position::BytePos;
 use std::{iter::Peekable, str::Chars};
 
 /// A wrapper implementation for [std::iter::Peekable].

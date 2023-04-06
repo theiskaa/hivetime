@@ -2,10 +2,10 @@
  * TODO: add documentation about file.
  */
 
-use crate::{
-    interpreter::position::{Position, Positioned},
-    interpreter::scanner::ScannerIt,
-    interpreter::token::Token,
+use super::{
+    position::{Position, Positioned},
+    scanner::ScannerIt,
+    token::Token,
 };
 
 pub struct Lexer<'a> {
