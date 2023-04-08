@@ -4,5 +4,7 @@
 
 pub mod token;
 pub mod position;
-pub mod scanner;
 pub mod lexer;
+pub mod ast;
+pub mod parser;
+

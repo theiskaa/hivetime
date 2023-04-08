@@ -25,7 +25,7 @@ pub struct Position {
 /// Implements:
 ///  - value of [T]
 ///  - value of [Position].
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub struct Positioned<T> {
     pub value: T,
     pub position: Position,
