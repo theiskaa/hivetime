@@ -1,7 +1,9 @@
 use std::io::{stdin, stdout, Write};
 use std::{env, fs};
 
+use hivetime::interpreter::ast::Ast;
 use hivetime::interpreter::lexer::Lexer;
+use hivetime::interpreter::parser::Parser;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -23,7 +25,7 @@ fn run_file(path: String) {
         Err(_) => String::new(),
     };
 
-    execute(input.as_str());
+    execute_parser(input.as_str());
 }
 
 fn run_prompt() {
@@ -36,15 +38,28 @@ fn run_prompt() {
         match stdin().read_line(&mut input) {
             Err(e) => println!("{} {} \n", format!("[!]"), e),
             Ok(_) => {
-                execute(input.as_str());
+                execute_parser(input.as_str());
             }
         };
     }
 }
 
-fn execute(input: &str) {
+fn _execute_lexer(input: &str) {
     let tokens = Lexer::lex(input);
     for t in tokens.iter() {
         println!("{token}", token = t.value.to_string());
+    }
+}
+
+fn execute_parser(input: &str) {
+    println!("--------- TOKENS");
+    let tokens = Lexer::lex(input);
+    for t in tokens.iter() {
+        println!("{token}", token = t.value.to_string());
+    }
+    let asts: Vec<Ast> = Parser::parse(tokens);
+    println!("--------- ASTS");
+    for a in asts.iter() {
+        println!("{}", a.to_string());
     }
 }

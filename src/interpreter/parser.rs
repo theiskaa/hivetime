@@ -4,11 +4,13 @@
 
 #![allow(unused_variables)]
 
+use super::{Branch::Branch, ast::Branch};
 use std::iter::Peekable;
+
 use super::{
+    Branch::Branch,
     position::Positioned,
     token::{Token, TokenVec},
-    ast::Ast,
 };
 
 /// A scanner implementation for [Parser] that's build on top of [Peekable].
@@ -23,7 +25,10 @@ impl TokenScanner {
     /// field to `0` and the `it` field to a [Peekable]
     /// iterator over the [TokenVec].
     pub fn new(buf: TokenVec) -> TokenScanner {
-        TokenScanner { index: 0, it: buf.peekable() }
+        TokenScanner {
+            index: 0,
+            it: buf.peekable(),
+        }
     }
 
     /// Returns the next token in the input string, updating the
@@ -48,7 +53,7 @@ impl TokenScanner {
     /// Consumes the next token if it satisfies a given condition `x`,
     /// updating the `index` field accordingly. Returns `true` if
     /// the token was consumed, `false` otherwise.
-    pub fn consume_if<F>(&mut self, condition: F) -> bool
+    pub fn _consume_if<F>(&mut self, condition: F) -> bool
     where
         F: Fn(Positioned<Token>) -> bool,
     {
@@ -63,10 +68,10 @@ impl TokenScanner {
     }
 
     /// Consumes the next token if the following token satisfies a
-    /// given condition `x`, updating the `current_position` field
+    /// given condition `x`, updating the `index` field
     /// accordingly. Returns `true` if the token was consumed, `false`
     /// otherwise.
-    pub fn consume_if_next<F>(&mut self, condition: F) -> bool
+    pub fn _consume_if_next<F>(&mut self, condition: F) -> bool
     where
         F: Fn(Positioned<Token>) -> bool,
     {
@@ -87,7 +92,7 @@ impl TokenScanner {
     }
 
     /// Consumes characters from the input string as long as they satisfy a
-    /// given condition `x`, updating the `current_position` field
+    /// given condition `x`, updating the `index` field
     /// accordingly. Returns a vector containing the consumed characters.
     pub fn consume_while<F>(&mut self, condition: F) -> Vec<Positioned<Token>>
     where
@@ -107,54 +112,51 @@ impl TokenScanner {
     }
 }
 
-
 /// TODO: docs
 pub struct Parser {
-    it: TokenScanner
+    it: TokenScanner,
 }
 
 impl Parser {
-  pub fn new(tokens: Vec<Positioned<Token>>) -> Parser {
-      Parser {
-          it: TokenScanner::new(TokenVec::new(tokens))
-      }
-  }
+    pub fn new(tokens: Vec<Positioned<Token>>) -> Parser {
+        Parser {
+            it: TokenScanner::new(TokenVec::new(tokens)),
+        }
+    }
 
-  pub fn parse(tokens: Vec<Positioned<Token>>) -> Vec<Ast> {
-      let mut parser = Parser::new(tokens);
-      parser.parse_buffer()
-  }
+    pub fn parse(tokens: Vec<Positioned<Token>>) -> Vec<Branch> {
+        let mut parser = Parser::new(tokens);
+        parser.parse_buffer()
+    }
 
-  pub fn parse_buffer(&mut self) -> Vec<Ast> {
-      let mut asts: Vec<Ast> = Vec::new();
+    pub fn parse_buffer(&mut self) -> Vec<Branch> {
+        let mut asts: Vec<Branch> = Vec::new();
 
-      loop {
-          let initial_position = self.it.index;
-          let token = match self.it.next() {
-              None => break,
-              Some(t) => t,
-          };
+        loop {
+            let initial_position = self.it.index;
+            let token = match self.it.next() {
+                None => break,
+                Some(t) => t,
+            };
 
-          if let Some(ast) = self.generate_ast(token) {
-              asts.push(ast);
-          }
-      }
+            if let Some(branch) = self.generate_ast(token) {
+                asts.push(branch);
+            }
+        }
 
-      vec![]
-  }
+        asts
+    }
 
-  pub fn generate_ast(&mut self, start: Positioned<Token>) -> Option<Ast> {
-      let tokens: Vec<Positioned<Token>> = Vec::new();
-      // TODO:
-      Some(Ast::Group(tokens))
-  }
+    pub fn generate_ast(&mut self, start: Positioned<Token>) -> Option<Branch> {
+        match start.value {
+            Token::Plus => Some(Branch::Single(start)),
+            Token::Minuse => Some(Branch::Single(start)),
+            Token::Hour(_) {
+                let mut left: Vec<Positioned<Token>> = Vec::from([start]);
+                let left_read = Some(Branch::Group()),
+            }
+        }
+    }
 
-  pub fn read_single_ast(&mut self, start: Positioned<Token>) -> Option<Ast> {
-      None // TODO:
-  }
 
-  pub fn read_group_ast(&mut self, start: Positioned<Token>) -> Ast {
-      // TODO:
-      Ast::Group(Vec::from([start]))
-  }
 }

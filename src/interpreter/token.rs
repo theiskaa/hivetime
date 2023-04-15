@@ -27,6 +27,13 @@ pub enum Token {
 }
 
 impl Token {
+    pub fn is_operation(&self) -> bool {
+        match self {
+            Token::Plus | Token::Minuse => true,
+            _ => false,
+        }
+    }
+
     pub fn time(t: String, number: Option<String>) -> Option<Token> {
         match t.as_str() {
             "h" | "hs" | "hour" | "hours" => match number {
@@ -84,7 +91,7 @@ pub enum TokenType {
 /// Made for [Parser] and [TokenScanner].
 pub struct TokenVec {
     pub data: Vec<Positioned<Token>>,
-    pub index: usize
+    pub index: usize,
 }
 
 impl TokenVec {

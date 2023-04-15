@@ -2,11 +2,11 @@
  * TODO: add documentation about file.
  */
 
-use std::{iter::Peekable, str::Chars};
 use super::{
-    position::{Position, Positioned, BytePos},
+    position::{BytePos, Position, Positioned},
     token::Token,
 };
+use std::{iter::Peekable, str::Chars};
 
 /// A wrapper implementation for [std::iter::Peekable].
 /// Which makes string manipulations easy to implement.
@@ -164,7 +164,7 @@ impl<'a> Lexer<'a> {
             '\n' => {
                 // TODO: increment line cursor.
                 None
-            },
+            }
             '+' => Some(Token::Plus),
             '-' => Some(Token::Minuse),
             num if num.is_numeric() => self.read_time(num),
@@ -194,7 +194,8 @@ impl<'a> Lexer<'a> {
             number.push_str(end.as_str());
         }
 
-        self.it.consume_while(|ch| ch == ' ' || ch == '\r' || ch == '\t' || ch == '\n');
+        self.it
+            .consume_while(|ch| ch == ' ' || ch == '\r' || ch == '\t' || ch == '\n');
         if self.it.peek().unwrap_or(&' ').is_ascii_alphabetic() {
             let time: String = self
                 .it
@@ -278,4 +279,3 @@ mod tests {
         assert_eq!(scanner.peek(), Some(&'w'));
     }
 }
-
