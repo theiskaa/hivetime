@@ -31,13 +31,6 @@ pub struct Positioned<T> {
     pub position: Position,
 }
 
-// [?] document me.
-#[derive(Debug, Clone, PartialEq)]
-pub struct Diagnostic {
-    pub position: Position,
-    pub message: String,
-}
-
 impl Position {
     // [?] why.
     pub unsafe fn new_unchecked(start: u32, end: u32) -> Self {

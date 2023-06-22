@@ -19,8 +19,8 @@ pub enum Token {
     // Operations.
     Plus,
     Minuse,
-    // TODO: add Prod,
-    // TODO: add Divide,
+    // TODO: add Prod,   | [?] (gonna require changes in parser)
+    // TODO: add Divide, | [?] (gonna require changes in parser)
 
     // Others
     Unknown(String),

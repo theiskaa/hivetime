@@ -145,6 +145,7 @@ impl<'a> Lexer<'a> {
                 ));
             }
         }
+
         tokens
     }
 
