@@ -55,6 +55,15 @@ impl Token {
         }
     }
 
+    /// Convert token (time) value to the actual time to minutes.
+    pub fn minuted(&self) -> Option<f32> {
+        match self {
+            Token::Minute(m) => Some(*m),
+            Token::Hour(h) => Some((*h) * 60.0),
+            _ => None,
+        }
+    }
+
     pub fn to_string(&self) -> String {
         match self {
             Token::Minute(m) => format!("{m} minute{}", if *m > 1.0 { "s" } else { "" }),

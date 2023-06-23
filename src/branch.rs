@@ -12,8 +12,8 @@ pub enum BranchType {
 
 #[derive(Clone)]
 pub struct Branch {
-    btype: BranchType,
-    tokens: Vec<Positioned<Token>>,
+    pub btype: BranchType,
+    pub tokens: Vec<Positioned<Token>>,
 }
 
 impl BranchType {
@@ -42,4 +42,10 @@ impl Branch {
 
         collected
     }
+}
+
+/// [Branch] prototype for calculator.
+pub enum CBranch {
+    Time(f32),
+    Operation(Token),
 }
