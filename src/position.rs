@@ -25,17 +25,10 @@ pub struct Position {
 /// Implements:
 ///  - value of [T]
 ///  - value of [Position].
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub struct Positioned<T> {
     pub value: T,
     pub position: Position,
-}
-
-// [?] document me.
-#[derive(Debug, Clone, PartialEq)]
-pub struct Diagnostic {
-    pub position: Position,
-    pub message: String,
 }
 
 impl Position {

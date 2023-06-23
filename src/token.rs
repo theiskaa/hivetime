@@ -4,6 +4,9 @@
 
 #![allow(dead_code)]
 
+use super::position::Positioned;
+
+#[derive(Clone)]
 pub enum Token {
     // Time types.
     Minute(f32),
@@ -16,14 +19,21 @@ pub enum Token {
     // Operations.
     Plus,
     Minuse,
-    // TODO: add Prod,
-    // TODO: add Divide,
+    // TODO: add Prod,   | [?] (gonna require changes in parser)
+    // TODO: add Divide, | [?] (gonna require changes in parser)
 
     // Others
     Unknown(String),
 }
 
 impl Token {
+    pub fn is_operation(&self) -> bool {
+        match self {
+            Token::Plus | Token::Minuse => true,
+            _ => false,
+        }
+    }
+
     pub fn time(t: String, number: Option<String>) -> Option<Token> {
         match t.as_str() {
             "h" | "hs" | "hour" | "hours" => match number {
@@ -57,6 +67,7 @@ impl Token {
 }
 
 /// A type(identification) implementation for [Token].
+#[derive(Clone)]
 pub enum TokenType {
     // TODO: add Second(f32)
     Minute,
@@ -73,4 +84,32 @@ pub enum TokenType {
 
     // Others
     Unknown,
+}
+
+#[derive(Clone)]
+/// A iterable structure that wraps [Vec<Positioned<Token>>]
+/// Made for [Parser] and [TokenScanner].
+pub struct TokenVec {
+    pub data: Vec<Positioned<Token>>,
+    pub index: usize,
+}
+
+impl TokenVec {
+    pub fn new(data: Vec<Positioned<Token>>) -> Self {
+        Self { data, index: 0 }
+    }
+}
+
+/// A simple iterator implementation for [TokenVec].
+impl Iterator for TokenVec {
+    type Item = Positioned<Token>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.index >= self.data.len() {
+            return None;
+        }
+
+        self.index += 1;
+        Some(self.data[self.index - 1].clone())
+    }
 }

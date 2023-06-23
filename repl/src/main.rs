@@ -1,7 +1,10 @@
 use std::io::{stdin, stdout, Write};
 use std::{env, fs};
 
-use hivetime::interpreter::lexer::Lexer;
+use hivetime::lexer::Lexer;
+use hivetime::parser::Parser;
+use hivetime::position::Positioned;
+use hivetime::token::Token;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -23,7 +26,7 @@ fn run_file(path: String) {
         Err(_) => String::new(),
     };
 
-    execute(input.as_str());
+    _execute_parser(input.as_str());
 }
 
 fn run_prompt() {
@@ -36,15 +39,46 @@ fn run_prompt() {
         match stdin().read_line(&mut input) {
             Err(e) => println!("{} {} \n", format!("[!]"), e),
             Ok(_) => {
-                execute(input.as_str());
+                _execute_parser(input.as_str());
             }
         };
     }
 }
 
-fn execute(input: &str) {
+fn _execute_lexer(input: &str) {
+    let tokens = Lexer::lex(input);
+    _print_tokens(tokens);
+}
+
+fn _execute_parser(input: &str) {
+    let tokens = Lexer::lex(input);
+    _print_tokens(tokens.clone());
+    println!("---------------------\n");
+    let (_, branches) = Parser::parse(tokens);
+    for b in branches.iter() {
+        println!("{}", b.to_string());
+    }
+}
+
+fn _print_tokens(tokens: Vec<Positioned<Token>>) {
+    for t in tokens.iter() {
+        println!("[");
+        println!("  {token}", token = t.value.to_string());
+        println!("]");
+    }
+}
+
+/*
+fn execute_parser(input: &str) {
+    println!("--------- TOKENS");
     let tokens = Lexer::lex(input);
     for t in tokens.iter() {
         println!("{token}", token = t.value.to_string());
     }
+     let asts: Vec<Ast> = Parser::parse(tokens);
+     println!("--------- ASTS");
+     for a in asts.iter() {
+         println!("{}", a.to_string());
+     }
 }
+*/
