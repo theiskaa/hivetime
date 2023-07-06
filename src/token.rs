@@ -2,8 +2,6 @@
  * TODO: add documentation about file.
  */
 
-#![allow(dead_code)]
-
 use super::position::Positioned;
 
 #[derive(Clone)]
