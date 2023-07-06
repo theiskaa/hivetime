@@ -1,6 +1,7 @@
 use std::io::{stdin, stdout, Write};
 use std::{env, fs};
 
+use hivetime::calculate;
 use hivetime::lexer::Lexer;
 use hivetime::parser::Parser;
 use hivetime::position::Positioned;
@@ -40,6 +41,8 @@ fn run_prompt() {
             Err(e) => println!("{} {} \n", format!("[!]"), e),
             Ok(_) => {
                 _execute_parser(input.as_str());
+                println!("--------------------");
+                execute_calculator(input.as_str());
             }
         };
     }
@@ -58,6 +61,11 @@ fn _execute_parser(input: &str) {
     for b in branches.iter() {
         println!("{}", b.to_string());
     }
+}
+
+fn execute_calculator(input: &str) {
+   let result = calculate(input);
+   println!("-> Result -> {}", result);
 }
 
 fn _print_tokens(tokens: Vec<Positioned<Token>>) {
