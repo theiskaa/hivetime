@@ -7,8 +7,8 @@ use std::{collections::HashMap, vec};
 use crate::{
     branch::{Branch, BranchType, CBranch},
     diagnostic::Diagnostic,
-    token::Token,
     position::Position,
+    token::Token,
 };
 
 pub struct Calculator {
@@ -36,11 +36,13 @@ impl Calculator {
 
         if self.branches.is_empty() {
             return (
-              vec![Diagnostic::new(Position::empty(), String::from("Empty input"))],
-              result,
+                vec![Diagnostic::new(
+                    Position::empty(),
+                    String::from("Empty input"),
+                )],
+                result,
             );
         }
-
 
         let cbranches = self.convert_to_calculatable();
         let mut i: usize = 0;
@@ -61,7 +63,7 @@ impl Calculator {
             if let Some(v) = cbranches.clone().get(i.clone()) {
                 match *v {
                     CBranch::Time(time) => y = time,
-                    _ => {},
+                    _ => {}
                 };
             }
 
@@ -69,7 +71,6 @@ impl Calculator {
             result = Calculator::execute_operation(x, y, operation);
             i += 2;
         }
-
 
         (diagnostics, result)
     }
@@ -86,7 +87,6 @@ impl Calculator {
             let err = Diagnostic::new(Position::empty(), String::from("Missing some tokens"));
             return Err(err);
         }
-
 
         Ok(match branches.clone()[i - 1].clone() {
             CBranch::Operation(token) => token,
@@ -149,7 +149,6 @@ impl Calculator {
             Token::Minuse
         }
     }
-
 
     /// Executes the given [operation] for [X] and [Y]
     ///

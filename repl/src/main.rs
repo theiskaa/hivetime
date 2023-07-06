@@ -1,32 +1,15 @@
 use std::io::{stdin, stdout, Write};
-use std::{env, fs};
+use std::env;
 
 use hivetime::calculate;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    if args.len() > 2 {
-        println!("Usage: hivetime [script]");
-        return;
+    if args.len() >= 2 {
+        let input  = args.iter().skip(1).map(|s| s.to_string()).collect::<Vec<_>>().join(" ");
+        return execute_calculator(input.as_str());
     }
 
-    if args.len() == 2 {
-        run_file(args[0].clone().to_string())
-    } else {
-        run_prompt()
-    }
-}
-
-fn run_file(path: String) {
-    let input = match fs::read_to_string(path) {
-        Ok(v) => v,
-        Err(_) => String::new(),
-    };
-
-    execute_calculator(input.as_str());
-}
-
-fn run_prompt() {
     loop {
         let mut input: String = String::new();
 
