@@ -4,7 +4,7 @@
 
 use super::{position::Positioned, token::Token};
 
-#[derive(Clone)]
+#[derive(Clone, Copy)]
 pub enum BranchType {
     Times,
     Operations,
@@ -12,8 +12,8 @@ pub enum BranchType {
 
 #[derive(Clone)]
 pub struct Branch {
-    btype: BranchType,
-    tokens: Vec<Positioned<Token>>,
+    pub btype: BranchType,
+    pub tokens: Vec<Positioned<Token>>,
 }
 
 impl BranchType {
@@ -42,4 +42,11 @@ impl Branch {
 
         collected
     }
+}
+
+/// [Branch] prototype for calculator.
+#[derive(Clone)]
+pub enum CBranch {
+    Time(f64),
+    Operation(Token),
 }

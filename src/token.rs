@@ -2,8 +2,6 @@
  * TODO: add documentation about file.
  */
 
-#![allow(dead_code)]
-
 use super::position::Positioned;
 
 #[derive(Clone)]
@@ -52,6 +50,15 @@ impl Token {
                     Some(Token::Unknown(format!("{d} with {num}")))
                 }
             }
+        }
+    }
+
+    /// Convert token (time) value to the actual time to minutes.
+    pub fn minuted(&self) -> Option<f32> {
+        match self {
+            Token::Minute(m) => Some(*m),
+            Token::Hour(h) => Some((*h) * 60.0),
+            _ => None,
         }
     }
 
